@@ -1,57 +1,32 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
-  entry: './src/index.jsx',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
-  },
-  devServer: { historyApiFallback: true },
-  module: {
-    rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader'
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: '../'
+    devServer: {
+        inline: true,
+        contentBase: './src',
+        port: 3000
+    },
+    devtool: 'cheap-module-eval-source-map',
+    entry: './dev/js/index.js',
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loaders: ['babel'],
+                exclude: /node_modules/
+            },
+            {
+                test: /\.scss/,
+                loader: 'style-loader!css-loader!sass-loader'
             }
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              minimize: 1,
-              importLoaders: 1
-            }
-          },
-          'postcss-loader'
         ]
-      }
+    },
+    output: {
+        path: 'src',
+        filename: 'js/bundle.min.js'
+    },
+    plugins: [
+        new webpack.optimize.OccurrenceOrderPlugin()
     ]
-  },
-
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'bundle.css',
-    })
-  ],
-
-  resolve: {
-    extensions: [ '.js', '.jsx' ]
-  },
-
-  optimization: {
-    noEmitOnErrors: true,
-    minimize: true,
-    splitChunks: false
-  },
-
-  devtool: 'none'
 };
