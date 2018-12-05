@@ -1,4 +1,4 @@
-# React/Sass/Redux Boilerplate
+# React/Redux Boilerplate
 
 Boilerplate and guide for a React/Sass/Redux build.
 
